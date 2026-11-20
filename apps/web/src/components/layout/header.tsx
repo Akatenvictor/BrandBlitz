@@ -10,6 +10,15 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { NotificationBell } from "./notification-bell";
 
+/**
+ * The letter shown in the avatar circle when a user has no image. An empty or
+ * whitespace-only name is treated like a missing one, so the circle shows "U"
+ * instead of nothing (`"".charAt(0)` is `""`, which `??` does not replace).
+ */
+export function avatarInitial(name: string | null | undefined): string {
+  return name?.trim().charAt(0).toUpperCase() || "U";
+}
+
 export function Header() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
@@ -118,7 +127,7 @@ export function Header() {
               {session.user?.image ? (
                 <Image
                   src={session.user.image}
-                  alt={session.user.name ?? "User"}
+                  alt={session.user.name?.trim() || "User"}
                   width={32}
                   height={32}
                   sizes="32px"
@@ -126,7 +135,7 @@ export function Header() {
                 />
               ) : (
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-white">
-                  {session.user?.name?.charAt(0).toUpperCase() ?? "U"}
+                  {avatarInitial(session.user?.name)}
                 </div>
               )}
               <Button variant="ghost" size="sm" onClick={() => signOut()}>
@@ -154,7 +163,7 @@ export function Header() {
                 {session.user?.image ? (
                   <Image
                     src={session.user.image}
-                    alt={session.user.name ?? "User"}
+                    alt={session.user.name?.trim() || "User"}
                     width={32}
                     height={32}
                     sizes="32px"
@@ -162,7 +171,7 @@ export function Header() {
                   />
                 ) : (
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-white">
-                    {session.user?.name?.charAt(0).toUpperCase() ?? "U"}
+                    {avatarInitial(session.user?.name)}
                   </div>
                 )}
                 <span className="text-sm text-[var(--foreground)]">{session.user?.name}</span>
