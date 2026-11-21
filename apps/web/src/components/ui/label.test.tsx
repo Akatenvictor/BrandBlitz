@@ -4,12 +4,23 @@ import { describe, expect, it } from "vitest";
 import { Label } from "./label";
 
 describe("Label", () => {
-  it("forwards props, ref, and peer-disabled styling to the label element", () => {
+  it("forwards its ref to the underlying label element", () => {
     const ref = React.createRef<HTMLLabelElement>();
-    render(<Label ref={ref} htmlFor="email" className="text-blue-500">Email</Label>);
-    const label = screen.getByText("Email");
-    expect(ref.current).toBe(label);
-    expect(label).toHaveAttribute("for", "email");
-    expect(label).toHaveClass("peer-disabled:cursor-not-allowed", "peer-disabled:opacity-70", "text-blue-500");
+    render(<Label ref={ref}>Email</Label>);
+    expect(ref.current).toBe(screen.getByText("Email"));
+  });
+
+  it("renders htmlFor and children", () => {
+    render(<Label htmlFor="email">Email address</Label>);
+    expect(screen.getByText("Email address")).toHaveAttribute("for", "email");
+  });
+
+  it("keeps peer-disabled styles and merges custom classes", () => {
+    render(<Label className="text-blue-500">Email</Label>);
+    expect(screen.getByText("Email")).toHaveClass(
+      "peer-disabled:cursor-not-allowed",
+      "peer-disabled:opacity-70",
+      "text-blue-500",
+    );
   });
 });
