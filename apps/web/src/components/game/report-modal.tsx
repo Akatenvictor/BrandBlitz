@@ -144,9 +144,12 @@ export function ReportModal({ challengeId, open, onOpenChange }: ReportModalProp
                 }}
                 placeholder="Provide any extra context..."
                 rows={3}
+                aria-describedby="report-note-counter"
                 className="w-full resize-none rounded-md border border-[var(--input)] bg-[var(--background)] px-3 py-2 text-sm placeholder:text-[var(--muted-foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]"
               />
               <p
+                id="report-note-counter"
+                aria-live={isNearLimit ? "polite" : "off"}
                 className={`mt-1 text-right text-xs transition-colors ${
                   isAtLimit
                     ? "font-semibold text-red-600"
